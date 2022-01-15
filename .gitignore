@@ -1,0 +1,6 @@
+out/
+frozen*
+beer/
+env/
+home/*.tflite
+home/*.npy
