@@ -3,7 +3,7 @@ import argparse, math, shutil, os, json
 from PIL import Image
 from sklearn.model_selection import train_test_split
 
-parser = argparse.ArgumentParser(description='Edge Impulse => Yolov5')
+parser = argparse.ArgumentParser(description='Edge Impulse => YOLOv5')
 parser.add_argument('--x-file', type=str, required=True)
 parser.add_argument('--y-file', type=str, required=True)
 parser.add_argument('--out-directory', type=str, required=True)
@@ -23,7 +23,7 @@ if os.path.exists(out_dir) and os.path.isdir(out_dir):
 
 class_count = 0
 
-print('Transforming Edge Impulse data format into something compatible with Yolov5')
+print('Transforming Edge Impulse data format into something compatible with YOLOv5')
 
 for ix in range(0, len(X)):
     print('[' + str(ix + 1).zfill(3) + ' / ' + str(len(X)).zfill(3) + '] Creating image...')
@@ -57,7 +57,7 @@ for ix in range(0, len(X)):
     with open(os.path.join(labels_dir, 'image' + str(ix).zfill(5) + '.txt'), 'w') as f:
         f.write('\n'.join(labels_text))
 
-print('Transforming Edge Impulse data format into something compatible with Yolov5 OK')
+print('Transforming Edge Impulse data format into something compatible with YOLOv5 OK')
 print('')
 
 class_names = []
