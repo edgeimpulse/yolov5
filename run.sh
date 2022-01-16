@@ -69,7 +69,7 @@ python3 -u extract_dataset.py --x-file /home/X_train_features.npy --y-file /home
 # --freeze 24 should freeze all layers
 cd yolov5
 # train
-python3 -u train.py --img $IMAGE_SIZE --batch 16 --epochs $EPOCHS --freeze 24 --data /tmp/data/data.yaml --weights ../yolov5s.pt --name yolov5s_results --cache --hyp data/hyps/hyp.finetune.yaml
+python3 -u train.py --img $IMAGE_SIZE --batch 16 --epochs $EPOCHS --freeze 24 --data /tmp/data/data.yaml --weights ../yolov5s.pt --name yolov5s_results --cache # --hyp data/hyps/hyp.finetune.yaml
 echo "Training complete"
 echo ""
 
