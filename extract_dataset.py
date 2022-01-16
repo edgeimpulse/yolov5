@@ -7,6 +7,7 @@ parser = argparse.ArgumentParser(description='Edge Impulse => Yolov5')
 parser.add_argument('--x-file', type=str, required=True)
 parser.add_argument('--y-file', type=str, required=True)
 parser.add_argument('--out-directory', type=str, required=True)
+parser.add_argument('--input-shape', type=str, required=True)
 
 args = parser.parse_args()
 
@@ -14,8 +15,7 @@ X = np.load(args.x_file, mmap_mode='r')
 with open(args.y_file, 'r') as f:
     Y = json.loads(f.read())['samples']
 
-image_size = int(math.sqrt(X.shape[1] / 3))
-print('image_size is', image_size, 'x', image_size)
+image_width, image_height, image_channels = [ int(x) for x in args.input_shape.replace('(', '').replace(')', '').split(',') ]
 
 out_dir = args.out_directory
 if os.path.exists(out_dir) and os.path.isdir(out_dir):
@@ -28,7 +28,7 @@ print('Transforming Edge Impulse data format into something compatible with Yolo
 for ix in range(0, len(X)):
     print('[' + str(ix + 1).zfill(3) + ' / ' + str(len(X)).zfill(3) + '] Creating image...')
 
-    raw_img_data = (np.reshape(X[ix], (image_size, image_size, 3)) * 255).astype(np.uint8)
+    raw_img_data = (np.reshape(X[ix], (image_width, image_height, image_channels)) * 255).astype(np.uint8)
     labels = Y[ix]['boundingBoxes']
 
     category = 'valid' if ix % 5 == 0 else 'train'
@@ -47,10 +47,10 @@ for ix in range(0, len(X)):
             class_count = l['label']
 
         # class x_center y_center width height
-        x_center = (l['x'] + l['w']) / 2 / image_size
-        y_center = (l['y'] + l['h']) / 2 / image_size
-        width = l['w'] / image_size
-        height = l['h'] / image_size
+        x_center = (l['x'] + l['w']) / 2 / image_width
+        y_center = (l['y'] + l['h']) / 2 / image_height
+        width = l['w'] / image_width
+        height = l['h'] / image_height
 
         labels_text.append(str(l['label'] - 1) + ' ' + str(x_center) + ' ' + str(y_center) + ' ' + str(width) + ' ' + str(height))
 

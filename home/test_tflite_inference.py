@@ -52,7 +52,7 @@ xyxy, classes, scores = YOLOdetect(output_data) #boxes(x,y,x,y), classes(int), s
 print('scores', scores, len(scores))
 
 for i in range(len(scores)):
-    if ((scores[i] > 0.5) and (scores[i] <= 1.0)):
+    if ((scores[i] > 0.4) and (scores[i] <= 1.0)):
         W = 160
         H = 160
         xmin = int(max(1,(xyxy[0][i] * W)))
@@ -60,4 +60,4 @@ for i in range(len(scores)):
         xmax = int(min(H,(xyxy[2][i] * W)))
         ymax = int(min(W,(xyxy[3][i] * H)))
 
-        print('found', scores[i], 'xmin', xmin, 'ymin', ymin, 'xmax', xmax, 'ymax', ymax)
+        print('found', 'class', classes[i], 'score', scores[i], 'xmin', xmin, 'ymin', ymin, 'xmax', xmax, 'ymax', ymax)

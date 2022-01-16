@@ -22,6 +22,12 @@ RUN /bin/bash install_tensorflow.sh && \
 COPY requirements.txt ./
 RUN pip3 install -r requirements.txt
 
+# grab chronic (yes, a bit late in the Dockerfile, but don't want to rebuild full container ;-) )
+RUN apt update && apt install -y moreutils
+
+# Patch up torch to disable cuda warnings
+RUN sed -i -e "s/warnings.warn/\# warnings.warn/" /usr/local/lib/python3.8/dist-packages/torch/autocast_mode.py
+
 COPY . ./
 
 ENTRYPOINT ["/bin/bash", "run.sh"]
