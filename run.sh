@@ -59,20 +59,17 @@ fi
 
 IMAGE_SIZE=$(python3 get_image_size.py --input-shape "$INPUT_SHAPE")
 
-# fix learning rate in YOLOv5, probably a better way to do it but this works ;-)
-sed -i -e "s/lr0: 0.0032/lr0: $LEARNING_RATE/" yolov5/data/hyps/hyp.finetune.yaml
-sed -i -e "s/lr0: 0.01/lr0: $LEARNING_RATE/" yolov5/data/hyps/hyp.scratch.yaml
+# set learning rate in hyper-params file, probably a better way to do it but this works ;-)
+sed -i -e "s/lr0: 0.01/lr0: $LEARNING_RATE/" hyp.yaml
 
 # convert Edge Impulse dataset (in Numpy format, with JSON for labels into something YOLOv5 understands)
 python3 -u extract_dataset.py --x-file /home/X_train_features.npy --y-file /home/y_train.npy --out-directory /tmp/data --input-shape "$INPUT_SHAPE"
 
-# --freeze 24 should freeze all layers
 cd yolov5
-# train
-python3 -u train.py --img $IMAGE_SIZE --batch 16 --epochs $EPOCHS --freeze 24 --data /tmp/data/data.yaml --weights ../yolov5s.pt --name yolov5s_results --cache --hyp data/hyps/hyp.scratch.yaml
+# train, --freeze 24 should freeze all layers except for the last one
+python3 -u train.py --img $IMAGE_SIZE --batch 16 --epochs $EPOCHS --freeze 24 --data /tmp/data/data.yaml --weights ../yolov5s6_384_ti.pt --name yolov5s_results --cache --hyp ../hyp.yaml
 echo "Training complete"
 echo ""
-
 
 # export as f32
 echo "Converting to TensorFlow Lite model (fp16)..."
