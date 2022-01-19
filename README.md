@@ -28,7 +28,7 @@ To test this locally:
 1. Run the container to test:
 
     ```
-    $ docker run --rm -v $PWD/home:/home yolov5 --epochs 1 --learning-rate 0.01 --validation-set-size 0.2 --input-shape "(160, 160, 3)"
+    $ docker run --shm-size=1024m --rm -v $PWD/home:/home yolov5 --epochs 1 --learning-rate 0.01 --validation-set-size 0.2 --input-shape "(160, 160, 3)"
     ```
 
 1. This should have created a .tflite file in the 'home' directory.
