@@ -4,3 +4,6 @@ beer/
 env/
 home/*.tflite
 home/*.npy
+.DS_Store
+out-*/
+.ei-block-config

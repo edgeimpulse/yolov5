@@ -1,3 +1,4 @@
+albumentations==1.1.0
 flatbuffers==1.12
 sklearn==0.0
 Pillow==9.0.0
