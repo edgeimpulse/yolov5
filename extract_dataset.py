@@ -46,11 +46,20 @@ for ix in range(0, len(X)):
         if (l['label'] > class_count):
             class_count = l['label']
 
+        x = l['x']
+        y = l['y']
+        w = l['w']
+        h = l['h']
+
+        print('x', x, 'y', y, 'w', w, 'h', h)
+
         # class x_center y_center width height
-        x_center = (l['x'] + l['w']) / 2 / image_width
-        y_center = (l['y'] + l['h']) / 2 / image_height
-        width = l['w'] / image_width
-        height = l['h'] / image_height
+        x_center = (x + (w / 2)) / image_width
+        y_center = (y + (h / 2)) / image_height
+        width = w / image_width
+        height = h / image_height
+
+        print('xcenter', x_center, 'ycenter', y_center)
 
         labels_text.append(str(l['label'] - 1) + ' ' + str(x_center) + ' ' + str(y_center) + ' ' + str(width) + ' ' + str(height))
 

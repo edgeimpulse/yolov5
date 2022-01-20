@@ -66,8 +66,19 @@ sed -i -e "s/lr0: 0.01/lr0: $LEARNING_RATE/" hyp.yaml
 python3 -u extract_dataset.py --x-file /home/X_train_features.npy --y-file /home/y_train.npy --out-directory /tmp/data --input-shape "$INPUT_SHAPE"
 
 cd yolov5
-# train, --freeze 24 should freeze all layers except for the last one
-python3 -u train.py --img $IMAGE_SIZE --batch 16 --epochs $EPOCHS --freeze 24 --data /tmp/data/data.yaml --weights ../yolov5s6_384_ti.pt --name yolov5s_results --cache --hyp ../hyp.yaml
+# train:
+#     --freeze 24 - freeze all layers except for the last one
+#     --batch 1 - as this otherwise requires a larger /dev/shm than we have, there's probably a workaround for this
+#                 but we need to check with infra
+python3 -u train.py --img $IMAGE_SIZE \
+    --batch 1 \
+    --epochs $EPOCHS \
+    --freeze 24 \
+    --data /tmp/data/data.yaml \
+    --weights ../yolov5s6_384_ti.pt \
+    --name yolov5s_results \
+    --cache \
+    --hyp ../hyp.yaml
 echo "Training complete"
 echo ""
 

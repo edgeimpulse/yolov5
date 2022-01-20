@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "config": {
+        "edgeimpulse.com": {
+            "name": "YOLOv5 s6 (yolov5s6_384_ti.pt)",
+            "type": "transferLearning",
+            "description": "YOLOv5 object detection block using s6 384x384 weights from TI",
+            "organizationId": 1,
+            "tlObjectDetectionLastLayer": "yolov5",
+            "tlOperatesOn": "object_detection",
+            "id": 1
+        }
+    }
+}

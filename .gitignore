@@ -5,3 +5,4 @@ env/
 home/*.tflite
 home/*.npy
 .DS_Store
+out-*/
