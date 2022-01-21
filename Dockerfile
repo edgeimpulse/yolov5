@@ -30,8 +30,8 @@ RUN pip3 install -r requirements.txt
 # Patch up torch to disable cuda warnings
 RUN sed -i -e "s/warnings.warn/\# warnings.warn/" /usr/local/lib/python3.8/dist-packages/torch/autocast_mode.py
 
-# Grab yolov5s6_384_ti_lite.pt pretrained weights
-RUN wget -O yolov5s6_384_ti.pt http://software-dl.ti.com/jacinto7/esd/modelzoo/gplv3/08_00_00_05/edgeai-yolov5/pretrained_models/models/yolov5s6_384_ti_lite/weights/best.pt
+# Grab yolov5s6.pt pretrained weights
+RUN wget -O yolov5s6.pt https://github.com/ultralytics/yolov5/releases/download/v6.0/yolov5s6.pt
 
 # Download some files that are pulled in, so we can run w/o network access
 RUN mkdir -p /root/.config/Ultralytics/ && wget -O /root/.config/Ultralytics/Arial.ttf https://ultralytics.com/assets/Arial.ttf

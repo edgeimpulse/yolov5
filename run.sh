@@ -68,14 +68,14 @@ python3 -u extract_dataset.py --x-file /home/X_train_features.npy --y-file /home
 cd yolov5
 # train:
 #     --freeze 24 - freeze all layers except for the last one
-#     --batch 4 - as this otherwise requires a larger /dev/shm than we have, there's probably a workaround for this
+#     --batch 1 - as this otherwise requires a larger /dev/shm than we have, there's probably a workaround for this
 #                 but we need to check with infra
 python3 -u train.py --img $IMAGE_SIZE \
-    --batch 4 \
-    --epochs $EPOCHS \
+    --batch 1 \
     --freeze 24 \
+    --epochs $EPOCHS \
     --data /tmp/data/data.yaml \
-    --weights ../yolov5s6_384_ti.pt \
+    --weights ../yolov5s6.pt \
     --name yolov5s_results \
     --cache \
     --hyp ../hyp.yaml
