@@ -1,40 +1,61 @@
 # syntax = docker/dockerfile:experimental
-FROM ubuntu:20.04
+ARG UBUNTU_VERSION=20.04
+
+ARG ARCH=
+ARG CUDA=11.2
+FROM nvidia/cuda${ARCH:+-$ARCH}:${CUDA}.1-base-ubuntu${UBUNTU_VERSION} as base
+ARG CUDA
+ARG CUDNN=8.1.0.77-1
+ARG CUDNN_MAJOR_VERSION=8
+ARG LIB_DIR_PREFIX=x86_64
+ARG LIBNVINFER=8.0.0-1
+ARG LIBNVINFER_MAJOR_VERSION=8
+# Let us install tzdata painlessly
+ENV DEBIAN_FRONTEND=noninteractive
+
 WORKDIR /app
 
-ARG DEBIAN_FRONTEND=noninteractive
+# Avoid confirmation dialogs
+ENV DEBIAN_FRONTEND=noninteractive
+# Makes Poetry behave more like npm, with deps installed inside a .venv folder
+# See https://python-poetry.org/docs/configuration/#virtualenvsin-project
+ENV POETRY_VIRTUALENVS_IN_PROJECT=true
 
-RUN apt update && apt install -y curl zip mercurial xxd lsb-release software-properties-common apt-transport-https vim wget git protobuf-compiler python3 python3-pip libssl-dev rustc libhdf5-dev llvm-9
-RUN python3 -m pip install --upgrade pip==20.3.4
-
-RUN apt update && apt install -y ffmpeg libsm6 libxext6 libgl1 moreutils
-
-# Install cuda
-COPY install_cuda.sh install_cuda.sh
-RUN /bin/bash install_cuda.sh && \
+# CUDA drivers
+SHELL ["/bin/bash", "-c"]
+COPY ./install_cuda.sh ./install_cuda.sh
+RUN ./install_cuda.sh && \
     rm install_cuda.sh
+
+# System dependencies
+RUN apt update && apt install -y wget git python3 python3-pip
 
 RUN git clone https://github.com/ultralytics/yolov5 && \
     cd yolov5 && \
-    git checkout 436ffc417ac2312de18287ddc4f87bdc2f7f5734
+    git checkout 23701ea
 RUN cd yolov5 && pip3 install -r requirements.txt
 
 # Install TensorFlow
 COPY install_tensorflow.sh install_tensorflow.sh
 RUN /bin/bash install_tensorflow.sh && \
     rm install_tensorflow.sh
+
 # Local dependencies
 COPY requirements.txt ./
 RUN pip3 install -r requirements.txt
 
 # Patch up torch to disable cuda warnings
-RUN sed -i -e "s/warnings.warn/\# warnings.warn/" /usr/local/lib/python3.8/dist-packages/torch/autocast_mode.py
+RUN sed -i -e "s/warnings.warn/\# warnings.warn/" /usr/local/lib/python3.8/dist-packages/torch/amp/autocast_mode.py && \
+    sed -i -e "s/warnings.warn/\# warnings.warn/" /usr/local/lib/python3.8/dist-packages/torch/cpu/amp/autocast_mode.py && \
+    sed -i -e "s/warnings.warn/\# warnings.warn/" /usr/local/lib/python3.8/dist-packages/torch/cuda/amp/autocast_mode.py
 
-# Grab yolov5s6.pt pretrained weights
-RUN wget -O yolov5s6.pt https://github.com/ultralytics/yolov5/releases/download/v6.0/yolov5s6.pt
+# Grab yolov5n.pt pretrained weights
+RUN wget -O yolov5n.pt https://github.com/ultralytics/yolov5/releases/download/v6.2/yolov5n.pt
 
 # Download some files that are pulled in, so we can run w/o network access
 RUN mkdir -p /root/.config/Ultralytics/ && wget -O /root/.config/Ultralytics/Arial.ttf https://ultralytics.com/assets/Arial.ttf
+
+WORKDIR /scripts
 
 # Copy the normal files (e.g. run.sh and the extract_dataset scripts in)
 COPY . ./
