@@ -89,7 +89,7 @@ echo ""
 
 # export as i8 (skipping for now for speed)
 echo "Converting to TensorFlow Lite model (int8)..."
-chronic python3 -u export.py --weights ./runs/train/yolov5_results/weights/last.pt --img $IMAGE_SIZE --include tflite --int8
+python3 -u export.py --weights ./runs/train/yolov5_results/weights/last.pt --img $IMAGE_SIZE --include tflite --int8
 cp runs/train/yolov5_results/weights/last-int8.tflite $OUT_DIRECTORY/model_quantized_int8_io.tflite
 echo "Converting to TensorFlow Lite model (int8) OK"
 echo ""
