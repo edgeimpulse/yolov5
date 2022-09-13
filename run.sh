@@ -64,8 +64,8 @@ python3 -u extract_dataset.py --data-directory $DATA_DIRECTORY --out-directory /
 cd /app/yolov5
 # train:
 #     --freeze 10 - freeze the bottom layers of the network
-#     --batch 1 - as this otherwise requires a larger /dev/shm than we have, there's probably a workaround for this
-#                 but we need to check with infra
+#     --workers 0 - as this otherwise requires a larger /dev/shm than we have on Edge Impulse prod,
+#                   there's probably a workaround for this, but we need to check with infra.
 python3 -u train.py --img $IMAGE_SIZE \
     --freeze 10 \
     --epochs $EPOCHS \
