@@ -11,7 +11,7 @@ What this repository does (see [run.sh](run.sh)):
 1. Convert the YOLOv5 model into TFLite format.
 1. Done!
 
-> **Note on epoch count:** Based on some experimentation you'll need ~150 epochs before the model converges.
+> **Note on epoch count:** YOLOv5 might take a while to converge, especially on smaller datasets. Play around with epoch count until you have something that works.
 
 ## Running the pipeline
 
@@ -23,7 +23,7 @@ You run this pipeline via Docker. This encapsulates all dependencies and package
 2. Install the [Edge Impulse CLI](https://docs.edgeimpulse.com/docs/edge-impulse-cli/cli-installation) v1.16.0 or higher.
 3. Create a new Edge Impulse project, and make sure the labeling method is set to 'Bounding boxes'.
 4. Add and label some data.
-5. Under **Create impulse** set the image size to 640x640, add an 'Image' DSP block and an 'Object Detection' learn block.
+5. Under **Create impulse** set the image size to e.g. 160x160, 320x320 or 640x640, add an 'Image' DSP block and an 'Object Detection' learn block.
 6. Open a command prompt or terminal window.
 7. Initialize the block:
 
