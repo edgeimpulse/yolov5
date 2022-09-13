@@ -53,19 +53,17 @@ if [ -z "$OUT_DIRECTORY" ]; then
     exit 1
 fi
 
-IMAGE_SIZE=$(python3 get_image_size.py --data-directory "$DATA_DIRECTORY")
-echo "Image size $IMAGE_SIZE"
+OUT_DIRECTORY=$(realpath $OUT_DIRECTORY)
+DATA_DIRECTORY=$(realpath $DATA_DIRECTORY)
 
-# set learning rate in hyper-params file, probably a better way to do it but this works ;-)
-cp hyp.yaml /tmp/hyp.yaml
-sed -i -e "s/lr0: 0.01/lr0: $LEARNING_RATE/" /tmp/hyp.yaml
+IMAGE_SIZE=$(python3 get_image_size.py --data-directory "$DATA_DIRECTORY")
 
 # convert Edge Impulse dataset (in Numpy format, with JSON for labels into something YOLOv5 understands)
 python3 -u extract_dataset.py --data-directory $DATA_DIRECTORY --out-directory /tmp/data
 
 cd /app/yolov5
 # train:
-#     --freeze 24 - freeze all layers except for the last one
+#     --freeze 10 - freeze the bottom layers of the network
 #     --batch 1 - as this otherwise requires a larger /dev/shm than we have, there's probably a workaround for this
 #                 but we need to check with infra
 python3 -u train.py --img $IMAGE_SIZE \
@@ -74,7 +72,8 @@ python3 -u train.py --img $IMAGE_SIZE \
     --data /tmp/data/data.yaml \
     --weights /app/yolov5n.pt \
     --name yolov5_results \
-    --cache
+    --cache \
+    --workers 0
 echo "Training complete"
 echo ""
 
@@ -82,14 +81,19 @@ mkdir -p $OUT_DIRECTORY
 
 # export as f32
 echo "Converting to TensorFlow Lite model (fp16)..."
-python3 -u export.py --weights ./runs/train/yolov5_results/weights/last.pt --img $IMAGE_SIZE --include tflite
+python3 -u export.py --weights ./runs/train/yolov5_results/weights/last.pt --img $IMAGE_SIZE --include saved_model tflite
 cp runs/train/yolov5_results/weights/last-fp16.tflite $OUT_DIRECTORY/model.tflite
+# ZIP up and copy the saved model too
+cd runs/train/yolov5_results/weights/last_saved_model
+zip -r -X ./saved_model.zip . > /dev/null
+cp ./saved_model.zip $OUT_DIRECTORY/saved_model.zip
+cd /app/yolov5
 echo "Converting to TensorFlow Lite model (fp16) OK"
 echo ""
 
-# export as i8 (skipping for now for speed)
-echo "Converting to TensorFlow Lite model (int8)..."
-python3 -u export.py --weights ./runs/train/yolov5_results/weights/last.pt --img $IMAGE_SIZE --include tflite --int8
-cp runs/train/yolov5_results/weights/last-int8.tflite $OUT_DIRECTORY/model_quantized_int8_io.tflite
-echo "Converting to TensorFlow Lite model (int8) OK"
-echo ""
+# export as i8 (skipping for now as it outputs a uint8 input, not an int8 - which the Studio won't handle)
+# echo "Converting to TensorFlow Lite model (int8)..."
+# python3 -u export.py --weights ./runs/train/yolov5_results/weights/last.pt --data /tmp/data/data.yaml --img $IMAGE_SIZE --include tflite --int8
+# cp runs/train/yolov5_results/weights/last-int8.tflite $OUT_DIRECTORY/model_quantized_int8_io.tflite
+# echo "Converting to TensorFlow Lite model (int8) OK"
+# echo ""
