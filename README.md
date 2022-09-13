@@ -11,7 +11,7 @@ What this repository does (see [run.sh](run.sh)):
 1. Convert the YOLOv5 model into TFLite format.
 1. Done!
 
-> **Note on epoch count:** YOLOv5 might take a while to converge, especially on smaller datasets. Play around with epoch count until you have something that works.
+> **Note on epoch count:** YOLOv5 might take a while to converge, especially on large images. Play around with epoch count, or lower the resolution of your input until you have something that works.
 
 ## Running the pipeline
 
