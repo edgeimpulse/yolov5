@@ -7,3 +7,4 @@ home/*.npy
 .DS_Store
 out-*/
 .ei-block-config
+data/

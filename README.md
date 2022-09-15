@@ -11,39 +11,71 @@ What this repository does (see [run.sh](run.sh)):
 1. Convert the YOLOv5 model into TFLite format.
 1. Done!
 
-To test this locally:
+> **Note on epoch count:** YOLOv5 might take a while to converge, especially on large images. Play around with epoch count, or lower the resolution of your input until you have something that works.
 
-1. Create a new Edge Impulse project, and make sure the labeling method is set to 'Bounding boxes'.
-1. Add and label some data.
-1. Under **Create impulse** set the image size to 160x160, add an 'Image' DSP block and an 'Object Detection' learn block.
-1. Generate features for the DSP block.
-1. Then go to **Dashboard** and download the 'Image training data' and 'Image training labels' files.
-1. Create a new folder in this repository named `home` and copy the downloaded files in under the names: `X_train_features.npy` and `y_train.npy`.
-1. Build the container:
+## Running the pipeline
+
+You run this pipeline via Docker. This encapsulates all dependencies and packages for you.
+
+### Running via Docker
+
+1. Install [Docker Desktop](https://www.docker.com/products/docker-desktop/).
+2. Install the [Edge Impulse CLI](https://docs.edgeimpulse.com/docs/edge-impulse-cli/cli-installation) v1.16.0 or higher.
+3. Create a new Edge Impulse project, and make sure the labeling method is set to 'Bounding boxes'.
+4. Add and label some data.
+5. Under **Create impulse** set the image size to e.g. 160x160, 320x320 or 640x640, add an 'Image' DSP block and an 'Object Detection' learn block.
+6. Open a command prompt or terminal window.
+7. Initialize the block:
+
+    ```
+    $ edge-impulse-blocks init
+    # Answer the questions, select "Object Detection" for 'What type of data does this model operate on?' and "YOLOv5" for 'What's the last layer...'
+    ```
+
+8. Fetch new data via:
+
+    ```
+    $ edge-impulse-blocks runner --download-data data/
+    ```
+
+9. Build the container:
 
     ```
     $ docker build -t yolov5 .
     ```
 
-1. Run the container to test:
+10. Run the container to test the script (you don't need to rebuild the container if you make changes):
 
     ```
-    $ docker run --shm-size=1024m --rm -v $PWD/home:/home yolov5 --epochs 1 --learning-rate 0.01 --validation-set-size 0.2 --input-shape "(160, 160, 3)"
+    $ docker run --shm-size=1024m --rm -v $PWD:/scripts yolov5 --data-directory data/ --epochs 30 --learning-rate 0.01 --out-directory out/
     ```
 
-1. This should have created a .tflite file in the 'home' directory.
+11. This creates a .tflite file in the 'out' directory.
 
-Now you can initialize the block to Edge Impulse:
+#### Adding extra dependencies
 
-```
-$ edge-impulse-blocks init
-# Answer the questions, and select "yolov5" as the 'object detection output layer'
-```
+If you have extra packages that you want to install within the container, add them to `requirements.txt` and rebuild the container.
 
-And push the block:
+## Fetching new data
 
-```
-$ edge-impulse-blocks push
-```
+To get up-to-date data from your project:
 
-The block is now available under any project that's owned by your organization.
+1. Install the [Edge Impulse CLI](https://docs.edgeimpulse.com/docs/edge-impulse-cli/cli-installation) v1.16 or higher.
+2. Open a command prompt or terminal window.
+3. Fetch new data via:
+
+    ```
+    $ edge-impulse-blocks runner --download-data data/
+    ```
+
+## Pushing the block back to Edge Impulse
+
+You can also push this block back to Edge Impulse, that makes it available like any other ML block so you can retrain your model when new data comes in, or deploy the model to device. See [Docs > Adding custom learning blocks](https://docs.edgeimpulse.com/docs/edge-impulse-studio/organizations/adding-custom-transfer-learning-models) for more information.
+
+1. Push the block:
+
+    ```
+    $ edge-impulse-blocks push
+    ```
+
+2. The block is now available under any of your projects, via  **Create impulse > Add learning block > Object Detection (Images)**.
