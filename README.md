@@ -68,6 +68,14 @@ To get up-to-date data from your project:
     $ edge-impulse-blocks runner --download-data data/
     ```
 
+> **Note: to fetch data from another project** run the following:
+> ```
+> $ edge-impulse-blocks --clean
+> # Then follow the steps provided
+> $ edge-impulse-blocks runner --download-data data/
+> # Then choose your project
+> ```
+
 ## Pushing the block back to Edge Impulse
 
 You can also push this block back to Edge Impulse, that makes it available like any other ML block so you can retrain your model when new data comes in, or deploy the model to device. See [Docs > Adding custom learning blocks](https://docs.edgeimpulse.com/docs/edge-impulse-studio/organizations/adding-custom-transfer-learning-models) for more information.
