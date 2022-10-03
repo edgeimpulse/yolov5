@@ -1,4 +1,5 @@
 albumentations==1.1.0
 flatbuffers==1.12
+onnx==1.12.0
 sklearn==0.0
 Pillow==9.0.0

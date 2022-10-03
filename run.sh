@@ -79,9 +79,16 @@ echo ""
 
 mkdir -p $OUT_DIRECTORY
 
+# export as onnx
+echo "Converting to ONNX..."
+python3 -u export.py --weights ./runs/train/yolov5_results/weights/last.pt --img $IMAGE_SIZE --include onnx
+cp runs/train/yolov5_results/weights/last.onnx $OUT_DIRECTORY/model.onnx
+echo "Converting to ONNX OK"
+echo ""
+
 # export as f32
 echo "Converting to TensorFlow Lite model (fp16)..."
-python3 -u export.py --weights ./runs/train/yolov5_results/weights/last.pt --img $IMAGE_SIZE --include saved_model tflite
+python3 -u export.py --weights ./runs/train/yolov5_results/weights/last.pt --img $IMAGE_SIZE --include saved_model tflite --keras
 cp runs/train/yolov5_results/weights/last-fp16.tflite $OUT_DIRECTORY/model.tflite
 # ZIP up and copy the saved model too
 cd runs/train/yolov5_results/weights/last_saved_model
