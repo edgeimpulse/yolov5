@@ -58,6 +58,9 @@ DATA_DIRECTORY=$(realpath $DATA_DIRECTORY)
 
 IMAGE_SIZE=$(python3 get_image_size.py --data-directory "$DATA_DIRECTORY")
 
+# surpress OpenBLAS warnings
+export OMP_NUM_THREADS=1
+
 # convert Edge Impulse dataset (in Numpy format, with JSON for labels into something YOLOv5 understands)
 python3 -u extract_dataset.py --data-directory $DATA_DIRECTORY --out-directory /tmp/data
 
@@ -69,6 +72,7 @@ rm -rf ./runs/train/yolov5_results/
 #     --workers 0 - as this otherwise requires a larger /dev/shm than we have on Edge Impulse prod,
 #                   there's probably a workaround for this, but we need to check with infra.
 python3 -u train.py --img $IMAGE_SIZE \
+    --freeze 10 \
     --epochs $EPOCHS \
     --data /tmp/data/data.yaml \
     --weights /app/yolov5s.pt \

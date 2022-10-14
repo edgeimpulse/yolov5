@@ -9,3 +9,4 @@ out-*/
 .ei-block-config*
 data/
 test/
+yolov5/

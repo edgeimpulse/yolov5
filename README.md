@@ -1,6 +1,6 @@
-# YOLOv5 transfer learning model for Edge Impulse
+# YOLOv5 (v5) transfer learning model for Edge Impulse
 
-This repository is an example on how to [bring your own model](https://docs.edgeimpulse.com/docs/adding-custom-transfer-learning-models) into Edge Impulse. This repository is using YOLOv5 (an object detection model), but the same principles apply to other transfer learning models.
+This repository is an example on how to [bring your own model](https://docs.edgeimpulse.com/docs/adding-custom-transfer-learning-models) into Edge Impulse. This repository is using YOLOv5 (an object detection model), but the same principles apply to other transfer learning models. This targets the v5.0 tag of ultralytics YOLOv5 (the master branch of this repo targets the latest v6.x release).
 
 As a primer, read the [Bring your own model](https://docs.edgeimpulse.com/docs/adding-custom-transfer-learning-models) page in the Edge Impulse docs.
 
@@ -41,13 +41,13 @@ You run this pipeline via Docker. This encapsulates all dependencies and package
 9. Build the container:
 
     ```
-    $ docker build -t yolov5 .
+    $ docker build -t yolov5-v5 .
     ```
 
 10. Run the container to test the script (you don't need to rebuild the container if you make changes):
 
     ```
-    $ docker run --shm-size=1024m --rm -v $PWD:/scripts yolov5 --data-directory data/ --epochs 30 --learning-rate 0.01 --out-directory out/
+    $ docker run --shm-size=1024m --rm -v $PWD:/scripts yolov5-v5 --data-directory data/ --epochs 30 --learning-rate 0.01 --out-directory out/
     ```
 
 11. This creates a .tflite file in the 'out' directory.
