@@ -13,6 +13,10 @@ What this repository does (see [run.sh](run.sh)):
 
 > **Note on epoch count:** YOLOv5 might take a while to converge, especially on large images. Play around with epoch count, or lower the resolution of your input until you have something that works.
 
+## TODO
+
+* [ ] Update `tflite_inference_test.py` so it outputs detections. https://github.com/edgeimpulse/yolov5-training/blob/v5.0-with-freeze/detect.py should have all code necessary I'd guess.
+
 ## Running the pipeline
 
 You run this pipeline via Docker. This encapsulates all dependencies and packages for you.
