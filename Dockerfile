@@ -23,34 +23,47 @@ ENV POETRY_VIRTUALENVS_IN_PROJECT=true
 
 # CUDA drivers
 SHELL ["/bin/bash", "-c"]
-COPY ./install_cuda.sh ./install_cuda.sh
+COPY ./dependencies/install_cuda.sh ./install_cuda.sh
 RUN ./install_cuda.sh && \
     rm install_cuda.sh
 
 # System dependencies
-RUN apt update && apt install -y wget git python3 python3-pip zip
+RUN apt update && apt install -y wget git python3 python3-pip zip protobuf-compiler vim
 
+# Install CMake (required for onnx 1.8.1)
+COPY dependencies/install_cmake.sh install_cmake.sh
+RUN /bin/bash install_cmake.sh && \
+    rm install_cmake.sh
+
+# YOLOv5 (v5)
 RUN git clone https://github.com/ultralytics/yolov5 && \
     cd yolov5 && \
-    git checkout 23701ea
+    git checkout f5b8f7d
 RUN cd yolov5 && pip3 install -r requirements.txt
 
 # Install TensorFlow
-COPY install_tensorflow.sh install_tensorflow.sh
+COPY dependencies/install_tensorflow.sh install_tensorflow.sh
 RUN /bin/bash install_tensorflow.sh && \
     rm install_tensorflow.sh
+
+# Install TensorFlow addons
+COPY dependencies/install_tensorflow_addons.sh install_tensorflow_addons.sh
+RUN --mount=type=cache,target=/root/.cache/pip --mount=type=cache,target=/app/wheels \
+    /bin/bash install_tensorflow_addons.sh && \
+    rm install_tensorflow_addons.sh
+
+# Install onnx-tensorflow
+RUN git clone https://github.com/onnx/onnx-tensorflow.git && \
+    cd onnx-tensorflow && \
+    git checkout 3f87e6235c96f2f66e523d95dc35ff4802862231 && \
+    pip3 install -e .
 
 # Local dependencies
 COPY requirements.txt ./
 RUN pip3 install -r requirements.txt
 
-# Patch up torch to disable cuda warnings
-RUN sed -i -e "s/warnings.warn/\# warnings.warn/" /usr/local/lib/python3.8/dist-packages/torch/amp/autocast_mode.py && \
-    sed -i -e "s/warnings.warn/\# warnings.warn/" /usr/local/lib/python3.8/dist-packages/torch/cpu/amp/autocast_mode.py && \
-    sed -i -e "s/warnings.warn/\# warnings.warn/" /usr/local/lib/python3.8/dist-packages/torch/cuda/amp/autocast_mode.py
-
-# Grab yolov5n.pt pretrained weights
-RUN wget -O yolov5n.pt https://github.com/ultralytics/yolov5/releases/download/v6.2/yolov5n.pt
+# Grab yolov5s.pt pretrained weights
+RUN wget -O yolov5s.pt https://github.com/ultralytics/yolov5/releases/download/v5.0/yolov5s.pt
 
 # Download some files that are pulled in, so we can run w/o network access
 RUN mkdir -p /root/.config/Ultralytics/ && wget -O /root/.config/Ultralytics/Arial.ttf https://ultralytics.com/assets/Arial.ttf

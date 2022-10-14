@@ -6,5 +6,6 @@ home/*.tflite
 home/*.npy
 .DS_Store
 out-*/
-.ei-block-config
+.ei-block-config*
 data/
+test/

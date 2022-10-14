@@ -62,15 +62,16 @@ IMAGE_SIZE=$(python3 get_image_size.py --data-directory "$DATA_DIRECTORY")
 python3 -u extract_dataset.py --data-directory $DATA_DIRECTORY --out-directory /tmp/data
 
 cd /app/yolov5
+rm -rf ./runs/train/yolov5_results/
+
 # train:
 #     --freeze 10 - freeze the bottom layers of the network
 #     --workers 0 - as this otherwise requires a larger /dev/shm than we have on Edge Impulse prod,
 #                   there's probably a workaround for this, but we need to check with infra.
 python3 -u train.py --img $IMAGE_SIZE \
-    --freeze 10 \
     --epochs $EPOCHS \
     --data /tmp/data/data.yaml \
-    --weights /app/yolov5n.pt \
+    --weights /app/yolov5s.pt \
     --name yolov5_results \
     --cache \
     --workers 0
@@ -81,26 +82,13 @@ mkdir -p $OUT_DIRECTORY
 
 # export as onnx
 echo "Converting to ONNX..."
-python3 -u export.py --weights ./runs/train/yolov5_results/weights/last.pt --img $IMAGE_SIZE --include onnx
+python3 -u models/export.py  --weights ./runs/train/yolov5_results/weights/last.pt --img $IMAGE_SIZE --batch-size 1
 cp runs/train/yolov5_results/weights/last.onnx $OUT_DIRECTORY/model.onnx
 echo "Converting to ONNX OK"
 echo ""
 
 # export as f32
 echo "Converting to TensorFlow Lite model (fp16)..."
-python3 -u export.py --weights ./runs/train/yolov5_results/weights/last.pt --img $IMAGE_SIZE --include saved_model tflite --keras
-cp runs/train/yolov5_results/weights/last-fp16.tflite $OUT_DIRECTORY/model.tflite
-# ZIP up and copy the saved model too
-cd runs/train/yolov5_results/weights/last_saved_model
-zip -r -X ./saved_model.zip . > /dev/null
-cp ./saved_model.zip $OUT_DIRECTORY/saved_model.zip
-cd /app/yolov5
+python3 -u /scripts/onnx_to_tflite.py --onnx-file $OUT_DIRECTORY/model.onnx --out-file $OUT_DIRECTORY/model.tflite
 echo "Converting to TensorFlow Lite model (fp16) OK"
 echo ""
-
-# export as i8 (skipping for now as it outputs a uint8 input, not an int8 - which the Studio won't handle)
-# echo "Converting to TensorFlow Lite model (int8)..."
-# python3 -u export.py --weights ./runs/train/yolov5_results/weights/last.pt --data /tmp/data/data.yaml --img $IMAGE_SIZE --include tflite --int8
-# cp runs/train/yolov5_results/weights/last-int8.tflite $OUT_DIRECTORY/model_quantized_int8_io.tflite
-# echo "Converting to TensorFlow Lite model (int8) OK"
-# echo ""
