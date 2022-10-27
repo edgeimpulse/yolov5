@@ -35,6 +35,11 @@ RUN git clone https://github.com/ultralytics/yolov5 && \
     git checkout 23701ea
 RUN cd yolov5 && pip3 install -r requirements.txt
 
+RUN git clone https://github.com/TexasInstruments/edgeai-yolov5 && \
+    cd edgeai-yolov5 && \
+    git checkout 8231fd618e05707e5dc6c94b552e95e95e1c8422
+RUN cd edgeai-yolov5 && pip3 install -r requirements.txt
+
 # Install TensorFlow
 COPY install_tensorflow.sh install_tensorflow.sh
 RUN /bin/bash install_tensorflow.sh && \
@@ -45,12 +50,12 @@ COPY requirements.txt ./
 RUN pip3 install -r requirements.txt
 
 # Patch up torch to disable cuda warnings
-RUN sed -i -e "s/warnings.warn/\# warnings.warn/" /usr/local/lib/python3.8/dist-packages/torch/amp/autocast_mode.py && \
-    sed -i -e "s/warnings.warn/\# warnings.warn/" /usr/local/lib/python3.8/dist-packages/torch/cpu/amp/autocast_mode.py && \
-    sed -i -e "s/warnings.warn/\# warnings.warn/" /usr/local/lib/python3.8/dist-packages/torch/cuda/amp/autocast_mode.py
+#RUN sed -i -e "s/warnings.warn/\# warnings.warn/" /usr/local/lib/python3.8/dist-packages/torch/amp/autocast_mode.py && \
+    #sed -i -e "s/warnings.warn/\# warnings.warn/" /usr/local/lib/python3.8/dist-packages/torch/cpu/amp/autocast_mode.py && \
+    #sed -i -e "s/warnings.warn/\# warnings.warn/" /usr/local/lib/python3.8/dist-packages/torch/cuda/amp/autocast_mode.py
 
 # Grab yolov5n.pt pretrained weights
-RUN wget -O yolov5n.pt https://github.com/ultralytics/yolov5/releases/download/v6.2/yolov5n.pt
+RUN wget -O yolov5n.pt http://software-dl.ti.com/jacinto7/esd/modelzoo/gplv3/08_00_00_05/edgeai-yolov5/pretrained_models/models/yolov5s6_384_ti_lite/weights/best.pt
 
 # Download some files that are pulled in, so we can run w/o network access
 RUN mkdir -p /root/.config/Ultralytics/ && wget -O /root/.config/Ultralytics/Arial.ttf https://ultralytics.com/assets/Arial.ttf
