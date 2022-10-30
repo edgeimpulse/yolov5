@@ -1,0 +1,2 @@
+-i https://pypi.ngc.nvidia.com
+onnx-graphsurgeon==0.3.24

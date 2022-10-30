@@ -8,14 +8,9 @@ What this repository does (see [run.sh](run.sh)):
 
 1. Convert the training data / training labels into YOLOv5 format using [extract_dataset.py](extract_dataset.py).
 1. Train YOLOv5 model (using https://github.com/ultralytics/yolov5).
-1. Convert the YOLOv5 model into TFLite format.
 1. Done!
 
 > **Note on epoch count:** YOLOv5 might take a while to converge, especially on large images. Play around with epoch count, or lower the resolution of your input until you have something that works.
-
-## TODO
-
-* [ ] Update `tflite_inference_test.py` so it outputs detections. https://github.com/edgeimpulse/yolov5-training/blob/v5.0-with-freeze/detect.py should have all code necessary I'd guess.
 
 ## Running the pipeline
 

@@ -23,6 +23,7 @@ tf_rep.export_graph(tf_model_path)
 
 # TF => TFLite
 converter = tf.lite.TFLiteConverter.from_saved_model(tf_model_path)
+converter.target_spec.supported_ops = [tf.lite.OpsSet.TFLITE_BUILTINS, tf.lite.OpsSet.SELECT_TF_OPS]
 tflite_model = converter.convert()
 
 # Save the model

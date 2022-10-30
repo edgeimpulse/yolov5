@@ -38,7 +38,7 @@ RUN /bin/bash install_cmake.sh && \
 # YOLOv5 (v5.0-with-freeze branch)
 RUN git clone https://github.com/edgeimpulse/yolov5-training yolov5 && \
     cd yolov5 && \
-    git checkout 8e96013200e8b99f4300575fb54275afa5e5711b
+    git checkout f8f31f6956c0feea98239ab323c2759f6eb5f282
 RUN cd yolov5 && pip3 install -r requirements.txt
 
 # Install TensorFlow
@@ -52,9 +52,18 @@ RUN --mount=type=cache,target=/root/.cache/pip --mount=type=cache,target=/app/wh
     /bin/bash install_tensorflow_addons.sh && \
     rm install_tensorflow_addons.sh
 
+# Install onnx-tensorflow
+RUN git clone https://github.com/onnx/onnx-tensorflow.git && \
+    cd onnx-tensorflow && \
+    git checkout 3f87e6235c96f2f66e523d95dc35ff4802862231 && \
+    pip3 install -e .
+
 # Local dependencies
 COPY requirements.txt ./
 RUN pip3 install -r requirements.txt
+
+COPY requirements-nvidia.txt ./
+RUN pip3 install -r requirements-nvidia.txt
 
 # Grab yolov5s.pt pretrained weights
 RUN wget -O yolov5s.pt https://github.com/ultralytics/yolov5/releases/download/v5.0/yolov5s.pt
