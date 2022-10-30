@@ -16,7 +16,7 @@ onnx_graph = onnx.load(args.onnx_file)
 
 onnx_graph = order_conversion(
     onnx_graph=onnx_graph,
-    input_op_names_and_order_dims={"inp1": [0,2,3,1]},
+    input_op_names_and_order_dims={"images": [0,2,3,1]},
     non_verbose=True
 )
 
