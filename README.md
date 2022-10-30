@@ -86,3 +86,12 @@ You can also push this block back to Edge Impulse, that makes it available like 
     ```
 
 2. The block is now available under any of your projects, via  **Create impulse > Add learning block > Object Detection (Images)**.
+
+## Testing inference (ONNX / TFLite)
+
+There's scripts to test both the ONNX and converted TFLite models.
+
+```
+$ python3 test_onnx.py --onnx-file out/model.onnx --image test.png
+$ python3 test_tflite.py --tflite-file out/model.onnx --image test.png
+```

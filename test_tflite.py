@@ -1,28 +1,45 @@
-from onnxruntime import InferenceSession
+import tensorflow as tf
 import numpy as np
 import cv2
 import os
 import math
-import onnx
 import argparse
-import time
 
-np.set_printoptions(suppress=True)
-
-parser = argparse.ArgumentParser(description='Image inferencing (ONNX)')
-parser.add_argument('--onnx-file', type=str, help='ONNX file', required=True)
+parser = argparse.ArgumentParser(description='Image inferencing (TFLite)')
+parser.add_argument('--tflite-file', type=str, help='TFLite file', required=True)
 parser.add_argument('--image', type=str, help='Image file', required=True)
 
 args, unknown = parser.parse_known_args()
 
-if not os.path.exists(args.onnx_file):
-    print(args.onnx_file + ' does not exist (via --onnx-file)')
+if not os.path.exists(args.tflite_file):
+    print(args.tflite_file + ' does not exist (via --tflite-file)')
     exit(1)
 if not os.path.exists(args.image):
     print(args.image + ' does not exist (via --image)')
     exit(1)
 
-def get_features_from_img(input_shape, img):
+def process_input(input_details, data):
+    """Prepares an input for inference, quantizing if necessary.
+
+    Args:
+        input_details: The result of calling interpreter.get_input_details()
+        data (numpy array): The raw input data
+
+    Returns:
+        A tensor object representing the input, quantized if necessary
+    """
+    if input_details[0]['dtype'] is np.int8:
+        scale = input_details[0]['quantization'][0]
+        zero_point = input_details[0]['quantization'][1]
+        data = (data / scale) + zero_point
+        data = np.around(data)
+        data = data.astype(np.int8)
+    return tf.convert_to_tensor(data)
+
+def get_features_from_img(interpreter, img):
+    input_details = interpreter.get_input_details()
+    input_shape = input_details[0]['shape']
+
     count, width, height, channels = input_shape
 
     # if channels == width of the image, then we are dealing with channel/width/height
@@ -48,25 +65,32 @@ def get_features_from_img(input_shape, img):
 
     return ret
 
-model = onnx.load(args.onnx_file)
-if (len(model.graph.input) != 1):
-    print('More than 1 input tensor, not supported')
-    exit(1)
+def invoke(interpreter, item, specific_input_shape):
+    """Invokes the Python TF Lite interpreter with a given input
+    """
+    input_details = interpreter.get_input_details()
+    output_details = interpreter.get_output_details()
+    item_as_tensor = process_input(input_details, item)
+    if specific_input_shape:
+        item_as_tensor = tf.reshape(item_as_tensor, specific_input_shape)
+    # Add batch dimension
+    item_as_tensor = tf.expand_dims(item_as_tensor, 0)
+    interpreter.set_tensor(input_details[0]['index'], item_as_tensor)
+    interpreter.invoke()
+    output = interpreter.get_tensor(output_details[0]['index'])
+    return output, output_details
 
-input_shape = [d.dim_value for d in model.graph.input[0].type.tensor_type.shape.dim]
-input_name = model.graph.input[0].name
+interpreter = tf.lite.Interpreter(model_path=args.tflite_file)
+interpreter.allocate_tensors()
 
 img = cv2.imread(os.path.join(args.image))
-print('img shape', img.shape)
-features = get_features_from_img(input_shape, img)
 
-sess = InferenceSession(args.onnx_file)
-in_args = {}
-in_args[input_name] = features
-result = sess.run(None, in_args)
-print('result', result[0].shape)
+input_data = get_features_from_img(interpreter, img)
 
-print('first 20 bytes', result[0].flatten()[0:20])
+output, output_details = invoke(interpreter, input_data, list(input_data.shape[1:]))
+output0 = interpreter.get_tensor(output_details[0]['index'])
+print('result', output0)
+
 
 def yolov5_class_filter(classdata):
     classes = []  # create a list
@@ -129,9 +153,9 @@ def render_out_img(xyxy, classes, scores):
 
         cv2.rectangle(img, (xmin, ymin), (xmax, ymax), color, 2)
 
-    cv2.imwrite('debug-onnx.png', img)
-    print('Written output image to', 'debug-onnx.png')
+    cv2.imwrite('out.png', img)
+    print('Written output image to', 'debug-tflite.png')
 
-xyxy, classes, scores = yolov5_detect(result[0])
+xyxy, classes, scores = yolov5_detect(output0)
 # print('xyxy', xyxy, 'classes', classes, 'scores', scores)
 render_out_img(xyxy, classes, scores)
