@@ -52,12 +52,6 @@ RUN --mount=type=cache,target=/root/.cache/pip --mount=type=cache,target=/app/wh
     /bin/bash install_tensorflow_addons.sh && \
     rm install_tensorflow_addons.sh
 
-# Install onnx-tensorflow
-RUN git clone https://github.com/onnx/onnx-tensorflow.git && \
-    cd onnx-tensorflow && \
-    git checkout 3f87e6235c96f2f66e523d95dc35ff4802862231 && \
-    pip3 install -e .
-
 # Local dependencies
 COPY requirements.txt ./
 RUN pip3 install -r requirements.txt

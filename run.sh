@@ -88,11 +88,6 @@ mkdir -p $OUT_DIRECTORY
 echo "Converting to ONNX..."
 python3 -u models/export.py  --weights ./runs/train/yolov5_results/weights/last.pt --img $IMAGE_SIZE --batch-size 1
 cp runs/train/yolov5_results/weights/last.onnx $OUT_DIRECTORY/model.onnx
+python3 /scripts/add_shape_info.py --onnx-file $OUT_DIRECTORY/model.onnx
 echo "Converting to ONNX OK"
-echo ""
-
-# export as f32
-echo "Converting to TensorFlow Lite model (fp16)..."
-python3 -u /scripts/onnx_to_tflite.py --onnx-file $OUT_DIRECTORY/model.onnx --out-file $OUT_DIRECTORY/model.tflite
-echo "Converting to TensorFlow Lite model (fp16) OK"
 echo ""
