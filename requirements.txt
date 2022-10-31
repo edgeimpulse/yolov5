@@ -8,5 +8,5 @@ tensorflow_probability==0.15.0 # onnx-tf requirement (TF2.7 compatibility)
 # force old versions
 onnx==1.8.1
 matplotlib==3.4.1
-torch==1.8.0
+torch==1.8.1
 torchvision==0.9.1
