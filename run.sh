@@ -90,6 +90,8 @@ python3 -u models/export.py  --weights ./runs/train/yolov5_results/weights/last.
 cp ./runs/train/yolov5_results/weights/last.onnx $OUT_DIRECTORY/model.onnx
 # add shape info
 python3 /scripts/add_shape_info.py --onnx-file $OUT_DIRECTORY/model.onnx
+# cut post processing
+# python3 /scripts/onnx_cut_graph.py --onnx-file $OUT_DIRECTORY/model.onnx --output-names 397 672 947 --out-file $OUT_DIRECTORY/model_wo_post.onnx
 echo "Converting to ONNX OK"
 echo ""
 
