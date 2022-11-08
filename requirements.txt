@@ -6,7 +6,7 @@ Pillow==9.0.0
 
 # TODO: Update with exact module version
 numpy
-torch>=1.10
+torch==1.7
 opencv_python
 loguru
 scikit-image
