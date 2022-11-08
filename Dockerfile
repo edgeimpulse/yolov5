@@ -38,7 +38,7 @@ RUN cd yolov5 && pip3 install -r requirements.txt
 RUN git clone https://github.com/TexasInstruments/edgeai-yolov5 && \
     cd edgeai-yolov5 && \
     git checkout 8231fd618e05707e5dc6c94b552e95e95e1c8422
-RUN cd edgeai-yolov5 && pip3 install -r requirements.txt
+#RUN cd edgeai-yolov5 && pip3 install -r requirements.txt
 
 # Install TensorFlow
 COPY install_tensorflow.sh install_tensorflow.sh
@@ -48,6 +48,8 @@ RUN /bin/bash install_tensorflow.sh && \
 # Local dependencies
 COPY requirements.txt ./
 RUN pip3 install -r requirements.txt
+
+RUN pip3 list
 
 # Patch up torch to disable cuda warnings
 #RUN sed -i -e "s/warnings.warn/\# warnings.warn/" /usr/local/lib/python3.8/dist-packages/torch/amp/autocast_mode.py && \

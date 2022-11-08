@@ -100,7 +100,7 @@ names: [""" + class_names + """]
 with open(os.path.join(out_dir, 'data.yaml'), 'w') as f:
     f.write(data_yaml)
 
-# https://github.com/TexasInstruments/edgeai-yolov5/blob/master/models/hub/yolov5s6.yaml
+# https://github.com/TexasInstruments/edgeai-yolov5/blob/master/models/hub/yolov5s.yaml
 yolo_spec = """# parameters
 nc: """ + str(class_count) + """  # number of classes
 depth_multiple: 0.33  # model depth multiple
