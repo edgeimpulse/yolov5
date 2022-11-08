@@ -67,13 +67,12 @@ cd /app/edgeai-yolov5
 #     --workers 0 - as this otherwise requires a larger /dev/shm than we have on Edge Impulse prod,
 #                   there's probably a workaround for this, but we need to check with infra.
 python3 -u train.py --img $IMAGE_SIZE \
-    --freeze 10 \
     --batch-size 64 \
     --epochs $EPOCHS \
     --data /tmp/data/data.yaml \
     --weights /app/yolov5n.pt \
     --name yolov5_results \
-    -- cfg yolov5s6.yaml
+    --cfg yolov5s.yaml
     --cache \
     --workers 0
 echo "Training complete"
