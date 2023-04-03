@@ -1,8 +1,8 @@
 # YOLOv5 transfer learning model for Edge Impulse
 
-This repository is an example on how to [bring your own model](https://docs.edgeimpulse.com/docs/adding-custom-transfer-learning-models) into Edge Impulse. This repository is using YOLOv5 (an object detection model), but the same principles apply to other transfer learning models.
+This repository is an example on how to [add a custom learning block](https://docs.edgeimpulse.com/docs/edge-impulse-studio/learning-blocks/adding-custom-learning-blocks) to Edge Impulse. This repository is using YOLOv5 (an object detection model), but the same principles apply to other transfer learning models.
 
-As a primer, read the [Bring your own model](https://docs.edgeimpulse.com/docs/adding-custom-transfer-learning-models) page in the Edge Impulse docs.
+As a primer, read the [Custom learning blocks](https://docs.edgeimpulse.com/docs/edge-impulse-studio/learning-blocks/adding-custom-learning-blocks) page in the Edge Impulse docs.
 
 What this repository does (see [run.sh](run.sh)):
 
