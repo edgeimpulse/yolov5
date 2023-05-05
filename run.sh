@@ -99,8 +99,8 @@ echo "Converting to TensorFlow Lite model (fp16) OK"
 echo ""
 
 # export as i8 (skipping for now as it outputs a uint8 input, not an int8 - which the Studio won't handle)
-# echo "Converting to TensorFlow Lite model (int8)..."
-# python3 -u export.py --weights ./runs/train/yolov5_results/weights/last.pt --data /tmp/data/data.yaml --img $IMAGE_SIZE --include tflite --int8
-# cp runs/train/yolov5_results/weights/last-int8.tflite $OUT_DIRECTORY/model_quantized_int8_io.tflite
-# echo "Converting to TensorFlow Lite model (int8) OK"
-# echo ""
+echo "Converting to TensorFlow Lite model (int8)..."
+python3 -u export.py --weights ./runs/train/yolov5_results/weights/last.pt --data /tmp/data/data.yaml --img $IMAGE_SIZE --include tflite --int8
+cp runs/train/yolov5_results/weights/last-int8.tflite $OUT_DIRECTORY/model_quantized_int8_io.tflite
+echo "Converting to TensorFlow Lite model (int8) OK"
+echo ""
