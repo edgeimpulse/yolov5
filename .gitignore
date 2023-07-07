@@ -8,3 +8,4 @@ home/*.npy
 out-*/
 .ei-block-config
 data/
+yolov5/

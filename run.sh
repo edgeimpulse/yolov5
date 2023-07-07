@@ -14,8 +14,8 @@ while [[ $# -gt 0 ]]; do
       shift # past argument
       shift # past value
       ;;
-    --learning-rate) # e.g. 0.01
-      LEARNING_RATE="$2"
+    --model-size) # e.g. 50
+      MODEL_SIZE="$2"
       shift # past argument
       shift # past value
       ;;
@@ -40,8 +40,8 @@ if [ -z "$EPOCHS" ]; then
     echo "Missing --epochs"
     exit 1
 fi
-if [ -z "$LEARNING_RATE" ]; then
-    echo "Missing --learning-rate"
+if [ -z "$MODEL_SIZE" ]; then
+    echo "Missing --model-size"
     exit 1
 fi
 if [ -z "$DATA_DIRECTORY" ]; then
@@ -59,21 +59,22 @@ DATA_DIRECTORY=$(realpath $DATA_DIRECTORY)
 IMAGE_SIZE=$(python3 get_image_size.py --data-directory "$DATA_DIRECTORY")
 
 # convert Edge Impulse dataset (in Numpy format, with JSON for labels into something YOLOv5 understands)
-python3 -u extract_dataset.py --data-directory $DATA_DIRECTORY --out-directory /tmp/data
+# and write out a specs file
+python3 -u extract_dataset.py \
+  --data-directory $DATA_DIRECTORY  \
+  --out-directory /tmp/data \
+  --model-size $MODEL_SIZE
 
 cd /app/yolov5
 # train:
 #     --freeze 10 - freeze the bottom layers of the network
-#     --workers 0 - as this otherwise requires a larger /dev/shm than we have on Edge Impulse prod,
-#                   there's probably a workaround for this, but we need to check with infra.
 python3 -u train.py --img $IMAGE_SIZE \
     --freeze 10 \
     --epochs $EPOCHS \
     --data /tmp/data/data.yaml \
-    --weights /app/yolov5n.pt \
+    --weights /app/yolov5$MODEL_SIZE.pt \
     --name yolov5_results \
-    --cache \
-    --workers 0
+    --cache
 echo "Training complete"
 echo ""
 
@@ -85,6 +86,7 @@ python3 -u export.py --weights ./runs/train/yolov5_results/weights/last.pt --img
 cp runs/train/yolov5_results/weights/last.onnx $OUT_DIRECTORY/model.onnx
 echo "Converting to ONNX OK"
 echo ""
+
 
 # export as f32
 echo "Converting to TensorFlow Lite model (fp16)..."
