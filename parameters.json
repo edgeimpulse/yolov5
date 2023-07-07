@@ -1,0 +1,19 @@
+[{
+    "name": "Number of training cycles",
+    "value": "30",
+    "type": "int",
+    "help": "Number of epochs to train the neural network on.",
+    "param": "epochs"
+},
+{
+    "name": "Model size",
+    "value": "n",
+    "type": "select",
+    "valid": [
+        { "label": "Nano", "value": "n" },
+        { "label": "Small", "value": "s" },
+        { "label": "Medium", "value": "m" },
+        { "label": "Large", "value": "l" }
+    ],
+    "param": "model-size"
+}]

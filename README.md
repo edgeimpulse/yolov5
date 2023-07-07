@@ -50,7 +50,7 @@ You run this pipeline via Docker. This encapsulates all dependencies and package
     $ docker run --shm-size=1024m --rm -v $PWD:/scripts yolov5 --data-directory data/ --epochs 30 --learning-rate 0.01 --out-directory out/
     ```
 
-11. This creates a .tflite file in the 'out' directory.
+11. This creates an .onnx file and two .tflite files (both quantized and unquantized) in the 'out' directory.
 
 #### Adding extra dependencies
 
@@ -86,4 +86,4 @@ You can also push this block back to Edge Impulse, that makes it available like 
     $ edge-impulse-blocks push
     ```
 
-2. The block is now available under any of your projects, via  **Create impulse > Add learning block > Object Detection (Images)**.
+2. The block is now available under any of your projects, via  **Create impulse > Add learning block**.
