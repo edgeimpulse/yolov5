@@ -47,7 +47,7 @@ You run this pipeline via Docker. This encapsulates all dependencies and package
 10. Run the container to test the script (you don't need to rebuild the container if you make changes):
 
     ```
-    $ docker run --shm-size=1024m --rm -v $PWD:/scripts yolov5 --data-directory data/ --epochs 30 --learning-rate 0.01 --out-directory out/
+    $ docker run --shm-size=1024m --rm -v $PWD:/scripts yolov5 --data-directory data/ --epochs 30 --model-size m --out-directory out/
     ```
 
 11. This creates an .onnx file and two .tflite files (both quantized and unquantized) in the 'out' directory.

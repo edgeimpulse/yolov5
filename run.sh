@@ -14,7 +14,7 @@ while [[ $# -gt 0 ]]; do
       shift # past argument
       shift # past value
       ;;
-    --model-size) # e.g. 50
+    --model-size) # e.g. one of: n, s, m, l
       MODEL_SIZE="$2"
       shift # past argument
       shift # past value
