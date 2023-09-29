@@ -16,4 +16,10 @@
         { "label": "Large", "value": "l" }
     ],
     "param": "model-size"
+},{
+    "name": "Batch size",
+    "value": "16",
+    "type": "int",
+    "help": "The batch size to use during training. Consider reducing this for larger models. Use -1 to autotune this value.",
+    "param": "batch-size"
 }]

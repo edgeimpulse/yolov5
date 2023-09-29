@@ -19,6 +19,11 @@ while [[ $# -gt 0 ]]; do
       shift # past argument
       shift # past value
       ;;
+    --batch-size) # e.g. 16
+      BATCH_SIZE="$2"
+      shift # past argument
+      shift # past value
+      ;;
     --data-directory) # e.g. 0.2
       DATA_DIRECTORY="$2"
       shift # past argument
@@ -42,6 +47,10 @@ if [ -z "$EPOCHS" ]; then
 fi
 if [ -z "$MODEL_SIZE" ]; then
     echo "Missing --model-size"
+    exit 1
+fi
+if [ -z "$BATCH_SIZE" ]; then
+    echo "Missing --batch-size"
     exit 1
 fi
 if [ -z "$DATA_DIRECTORY" ]; then
@@ -71,6 +80,7 @@ cd /app/yolov5
 python3 -u train.py --img $IMAGE_SIZE \
     --freeze 10 \
     --epochs $EPOCHS \
+    --batch-size $BATCH_SIZE \
     --data /tmp/data/data.yaml \
     --weights /app/yolov5$MODEL_SIZE.pt \
     --name yolov5_results \
