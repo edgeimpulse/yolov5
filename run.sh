@@ -19,6 +19,11 @@ while [[ $# -gt 0 ]]; do
       shift # past argument
       shift # past value
       ;;
+    --batch-size) # e.g. 16
+      BATCH_SIZE="$2"
+      shift # past argument
+      shift # past value
+      ;;
     --data-directory) # e.g. 0.2
       DATA_DIRECTORY="$2"
       shift # past argument
@@ -44,6 +49,10 @@ if [ -z "$MODEL_SIZE" ]; then
     echo "Missing --model-size"
     exit 1
 fi
+if [ -z "$BATCH_SIZE" ]; then
+    echo "Missing --batch-size"
+    exit 1
+fi
 if [ -z "$DATA_DIRECTORY" ]; then
     echo "Missing --data-directory"
     exit 1
@@ -58,6 +67,9 @@ DATA_DIRECTORY=$(realpath $DATA_DIRECTORY)
 
 IMAGE_SIZE=$(python3 get_image_size.py --data-directory "$DATA_DIRECTORY")
 
+# Disable tqdm to reduce the volume of logging when training
+export TQDM_DISABLE=1
+
 # convert Edge Impulse dataset (in Numpy format, with JSON for labels into something YOLOv5 understands)
 # and write out a specs file
 python3 -u extract_dataset.py \
@@ -71,6 +83,7 @@ cd /app/yolov5
 python3 -u train.py --img $IMAGE_SIZE \
     --freeze 10 \
     --epochs $EPOCHS \
+    --batch-size $BATCH_SIZE \
     --data /tmp/data/data.yaml \
     --weights /app/yolov5$MODEL_SIZE.pt \
     --name yolov5_results \
