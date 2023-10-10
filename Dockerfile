@@ -30,6 +30,9 @@ RUN ./install_cuda.sh && \
 # System dependencies
 RUN apt update && apt install -y wget git python3 python3-pip zip
 
+# Latest setuptools
+RUN python3 -m pip install --upgrade setuptools
+
 RUN git clone https://github.com/ultralytics/yolov5 && \
     cd yolov5 && \
     git checkout 23701ea
