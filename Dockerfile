@@ -28,7 +28,7 @@ RUN ./install_cuda.sh && \
     rm install_cuda.sh
 
 # System dependencies
-RUN apt update && apt install -y wget git python3 python3-pip zip libgl1 libgl1-mesa-glx
+RUN apt update && apt install -y wget git python3 python3-pip zip libgl1 libgl1-mesa-glx libglib2.0-0
 
 # Latest setuptools
 RUN python3 -m pip install --upgrade setuptools
@@ -66,8 +66,3 @@ WORKDIR /scripts
 COPY . ./
 
 ENTRYPOINT ["/bin/bash", "run.sh"]
-# bash run.sh --data-directory data/ --epochs 1 --model-size n --out-directory out --batch-size 32
-# apt-get install -y libglib2.0-0 libsm6 libxrender1 libxext6
-
-# apt-get install    libgl1    libgl1-mesa-glx
-# apt-get install ffmpeg libsm6 libxext6  -y
