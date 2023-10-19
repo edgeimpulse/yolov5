@@ -28,7 +28,7 @@ RUN ./install_cuda.sh && \
     rm install_cuda.sh
 
 # System dependencies
-RUN apt update && apt install -y wget git python3 python3-pip zip
+RUN apt update && apt install -y wget git python3 python3-pip zip libgl1 libgl1-mesa-glx libglib2.0-0
 
 # Latest setuptools
 RUN python3 -m pip install --upgrade setuptools
@@ -36,16 +36,15 @@ RUN python3 -m pip install --upgrade setuptools
 RUN git clone https://github.com/ultralytics/yolov5 && \
     cd yolov5 && \
     git checkout 23701ea
-RUN cd yolov5 && pip3 install -r requirements.txt
+
+# Local dependencies
+COPY requirements.txt ./
+RUN pip3 install -r requirements.txt
 
 # Install TensorFlow
 COPY install_tensorflow.sh install_tensorflow.sh
 RUN /bin/bash install_tensorflow.sh && \
     rm install_tensorflow.sh
-
-# Local dependencies
-COPY requirements.txt ./
-RUN pip3 install -r requirements.txt
 
 # Patch up torch to disable cuda warnings
 RUN sed -i -e "s/warnings.warn/\# warnings.warn/" /usr/local/lib/python3.8/dist-packages/torch/amp/autocast_mode.py && \
