@@ -80,6 +80,13 @@ python3 -u extract_dataset.py \
 cd /app/yolov5
 # train:
 #     --freeze 10 - freeze the bottom layers of the network
+# drop ansi characters
+cd /app/yolov5/utils
+line_match=$(cat general.py | grep -Fn "return ''.join(colors[x] for x in args) + f'{string}' + colors['end']" | awk -F: '{print $1}')
+cat general.py | sed $line_match's/.*/    return string/' > tmp
+mv tmp general.py
+cd /app/yolov5
+
 python3 -u train.py --img $IMAGE_SIZE \
     --freeze 10 \
     --epochs $EPOCHS \
