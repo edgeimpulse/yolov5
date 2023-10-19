@@ -1,25 +1,40 @@
-[{
-    "name": "Number of training cycles",
-    "value": "30",
-    "type": "int",
-    "help": "Number of epochs to train the neural network on.",
-    "param": "epochs"
-},
-{
-    "name": "Model size",
-    "value": "n",
-    "type": "select",
-    "valid": [
-        { "label": "Nano", "value": "n" },
-        { "label": "Small", "value": "s" },
-        { "label": "Medium", "value": "m" },
-        { "label": "Large", "value": "l" }
-    ],
-    "param": "model-size"
-},{
-    "name": "Batch size",
-    "value": "16",
-    "type": "int",
-    "help": "The batch size to use during training. Consider reducing this for larger models. Use -1 to autotune this value.",
-    "param": "batch-size"
-}]
+[
+    {
+        "name": "Number of training cycles",
+        "value": "30",
+        "type": "int",
+        "help": "Number of epochs to train the neural network on.",
+        "param": "epochs"
+    },
+    {
+        "name": "Model size",
+        "value": "n",
+        "type": "select",
+        "valid": [
+            {
+                "label": "Nano - 1.9M params, 3.87 MB",
+                "value": "n"
+            },
+            {
+                "label": "Small - 7.2M params, 14.1 MB",
+                "value": "s"
+            },
+            {
+                "label": "Medium - 21.2M params, 40.8 MB",
+                "value": "m"
+            },
+            {
+                "label": "Large - 46.5M params, 89.3 MB",
+                "value": "l"
+            }
+        ],
+        "param": "model-size"
+    },
+    {
+        "name": "Batch size",
+        "value": "16",
+        "type": "int",
+        "help": "The batch size to use during training. Consider reducing this for larger models. Use -1 to autotune this value.",
+        "param": "batch-size"
+    }
+]
