@@ -2,9 +2,16 @@
 
 This repository is an example on how to [add a custom learning block](https://docs.edgeimpulse.com/docs/edge-impulse-studio/learning-blocks/adding-custom-learning-blocks) to Edge Impulse. This repository is using YOLOv5 (an object detection model), but the same principles apply to other transfer learning models.
 
-As a primer, read the [Custom learning blocks](https://docs.edgeimpulse.com/docs/edge-impulse-studio/learning-blocks/adding-custom-learning-blocks) page in the Edge Impulse docs.
+## How to add to an org
+Download the repo and run the following from the root folder:
+```
+edge-impulse-blocks init
+edge-impulse-blocks push
+```
 
-What this repository does (see [run.sh](run.sh)):
+## What this repository does 
+As a primer, read the [Custom learning blocks](https://docs.edgeimpulse.com/docs/edge-impulse-studio/learning-blocks/adding-custom-learning-blocks) page in the Edge Impulse docs.
+(see [run.sh](run.sh)):
 
 1. Convert the training data / training labels into YOLOv5 format using [extract_dataset.py](extract_dataset.py).
 1. Train YOLOv5 model (using https://github.com/ultralytics/yolov5).
