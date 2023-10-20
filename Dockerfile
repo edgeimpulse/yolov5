@@ -28,14 +28,18 @@ RUN ./install_cuda.sh && \
     rm install_cuda.sh
 
 # System dependencies
+# libs required for opencv
+# https://stackoverflow.com/questions/55313610/importerror-libgl-so-1-cannot-open-shared-object-file-no-such-file-or-directo
 RUN apt update && apt install -y wget git python3 python3-pip zip libgl1 libgl1-mesa-glx libglib2.0-0
 
 # Latest setuptools
 RUN python3 -m pip install --upgrade setuptools
 
-RUN git clone https://github.com/ultralytics/yolov5 && \
-    cd yolov5 && \
-    git checkout 23701ea
+RUN git clone https://github.com/edgeimpulse/yolov5-training && \
+    cd yolov5-training && \
+    git checkout fix-stdout-in-ei-studio && \
+    cd .. && \
+    mv yolov5-training yolov5 
 
 # Local dependencies
 COPY requirements.txt ./
