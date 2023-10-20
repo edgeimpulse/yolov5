@@ -60,6 +60,13 @@ RUN wget -O yolov5n.pt https://github.com/ultralytics/yolov5/releases/download/v
 # Download some files that are pulled in, so we can run w/o network access
 RUN mkdir -p /root/.config/Ultralytics/ && wget -O /root/.config/Ultralytics/Arial.ttf https://ultralytics.com/assets/Arial.ttf
 
+
+# copy in updates to yolov5 to fix stdout
+COPY ./yolov5_fix_stdout/train.py /app/yolov5/train.py
+COPY ./yolov5_fix_stdout/val.py /app/yolov5/val.py
+COPY ./yolov5_fix_stdout/utils/general.py /app/yolov5/utils/general.py
+COPY ./yolov5_fix_stdout/utils/loggers/__init__.py /app/yolov5/utils/loggers/__init__.py
+
 WORKDIR /scripts
 
 # Copy the normal files (e.g. run.sh and the extract_dataset scripts in)
