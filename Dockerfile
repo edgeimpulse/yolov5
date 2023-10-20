@@ -33,12 +33,14 @@ RUN apt update && apt install -y wget git python3 python3-pip zip libgl1 libgl1-
 # Latest setuptools
 RUN python3 -m pip install --upgrade setuptools
 
-RUN git clone https://github.com/edgeimpulse/yolov5_23701ea && \
-    mv yolov5_23701ea yolov5 
+RUN git clone https://github.com/edgeimpulse/yolov5-training && \
+    cd yolov5-training && \
+    git checkout fix-stdout-in-studio && \
+    cd .. && \
+    mv yolov5-training yolov5 
 
 # Local dependencies
-COPY requirements.txt ./
-RUN pip3 install -r requirements.txt
+RUN cd /app/yolov5 && pip3 install -r requirements.txt
 
 # Install TensorFlow
 COPY install_tensorflow.sh install_tensorflow.sh
