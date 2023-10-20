@@ -33,9 +33,8 @@ RUN apt update && apt install -y wget git python3 python3-pip zip libgl1 libgl1-
 # Latest setuptools
 RUN python3 -m pip install --upgrade setuptools
 
-RUN git clone https://github.com/ultralytics/yolov5 && \
-    cd yolov5 && \
-    git checkout 23701ea
+RUN git clone https://github.com/edgeimpulse/yolov5_23701ea && \
+    mv yolov5_23701ea yolov5 
 
 # Local dependencies
 COPY requirements.txt ./
