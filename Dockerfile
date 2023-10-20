@@ -28,6 +28,8 @@ RUN ./install_cuda.sh && \
     rm install_cuda.sh
 
 # System dependencies
+# libs required for opencv
+# https://stackoverflow.com/questions/55313610/importerror-libgl-so-1-cannot-open-shared-object-file-no-such-file-or-directo
 RUN apt update && apt install -y wget git python3 python3-pip zip libgl1 libgl1-mesa-glx libglib2.0-0
 
 # Latest setuptools
