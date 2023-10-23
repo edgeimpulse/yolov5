@@ -4,7 +4,8 @@
     "type": "int",
     "help": "Number of epochs to train the neural network on.",
     "param": "epochs"
-},{
+},
+{
     "name": "Model size",
     "value": "n",
     "type": "select",
@@ -27,8 +28,7 @@
             }
         ],
     "param": "model-size"
-},
-{
+},{
     "name": "Batch size",
     "value": "16",
     "type": "int",
