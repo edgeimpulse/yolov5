@@ -4,8 +4,7 @@
     "type": "int",
     "help": "Number of epochs to train the neural network on.",
     "param": "epochs"
-},
-{
+},{
     "name": "Model size",
     "value": "n",
     "type": "select",
@@ -36,5 +35,4 @@
     "help": "The batch size to use during training. Consider reducing this for larger models. Use -1 to autotune this value.",
     "param": "batch-size",
     "optional": true
-}
-]
+}]
