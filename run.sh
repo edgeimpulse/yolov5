@@ -50,8 +50,7 @@ if [ -z "$MODEL_SIZE" ]; then
     exit 1
 fi
 if [ -z "$BATCH_SIZE" ]; then
-    echo "Missing --batch-size"
-    exit 1
+    BATCH_SIZE=16
 fi
 if [ -z "$DATA_DIRECTORY" ]; then
     echo "Missing --data-directory"
