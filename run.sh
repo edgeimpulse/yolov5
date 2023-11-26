@@ -80,7 +80,7 @@ cd /app/yolov5
 # train:
 #     --freeze 10 - freeze the bottom layers of the network
 python3 -u train.py --img $IMAGE_SIZE \
-    --freeze 10 \
+    #--freeze 10 \
     --epochs $EPOCHS \
     --batch-size $BATCH_SIZE \
     --data /tmp/data/data.yaml \
