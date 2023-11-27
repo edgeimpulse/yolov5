@@ -42,6 +42,14 @@ RUN git clone https://github.com/edgeimpulse/yolov5-training && \
     cd .. && \
     mv yolov5-training yolov5 
 
+# RUN cd yolov5/models && \
+#     wget -O yolov5l.yaml https://github.com/ultralytics/yolov5/blob/v2.0/models/yolov5l.yaml && \
+#     wget -O yolov5m.yaml https://github.com/ultralytics/yolov5/blob/v2.0/models/yolov5m.yaml && \
+#     wget -O yolov5s.yaml https://github.com/ultralytics/yolov5/blob/v2.0/models/yolov5s.yaml && \
+#     wget -O yolov5x.yaml https://github.com/ultralytics/yolov5/blob/v2.0/models/yolov5x.yaml && \
+#     cd /app
+
+
 # Local dependencies
 COPY requirements.txt ./
 RUN pip3 install -r requirements.txt
@@ -52,15 +60,15 @@ RUN /bin/bash install_tensorflow.sh && \
     rm install_tensorflow.sh
 
 # Patch up torch to disable cuda warnings
-RUN sed -i -e "s/warnings.warn/\# warnings.warn/" /usr/local/lib/python3.8/dist-packages/torch/amp/autocast_mode.py && \
-    sed -i -e "s/warnings.warn/\# warnings.warn/" /usr/local/lib/python3.8/dist-packages/torch/cpu/amp/autocast_mode.py && \
-    sed -i -e "s/warnings.warn/\# warnings.warn/" /usr/local/lib/python3.8/dist-packages/torch/cuda/amp/autocast_mode.py
+# RUN sed -i -e "s/warnings.warn/\# warnings.warn/" /usr/local/lib/python3.8/dist-packages/torch/amp/autocast_mode.py && \
+#     sed -i -e "s/warnings.warn/\# warnings.warn/" /usr/local/lib/python3.8/dist-packages/torch/cpu/amp/autocast_mode.py && \
+#     sed -i -e "s/warnings.warn/\# warnings.warn/" /usr/local/lib/python3.8/dist-packages/torch/cuda/amp/autocast_mode.py
 
 # Grab yolov5n.pt pretrained weights
-RUN wget -O yolov5n.pt https://github.com/ultralytics/yolov5/releases/download/v6.2/yolov5n.pt && \
-    wget -O yolov5s.pt https://github.com/ultralytics/yolov5/releases/download/v6.2/yolov5s.pt && \
-    wget -O yolov5m.pt https://github.com/ultralytics/yolov5/releases/download/v6.2/yolov5m.pt && \
-    wget -O yolov5l.pt https://github.com/ultralytics/yolov5/releases/download/v6.2/yolov5l.pt
+RUN wget -O yolov5n.pt https://github.com/ultralytics/yolov5/releases/download/v2.0/yolov5x.pt && \
+    wget -O yolov5s.pt https://github.com/ultralytics/yolov5/releases/download/v2.0/yolov5s.pt && \
+    wget -O yolov5m.pt https://github.com/ultralytics/yolov5/releases/download/v2.0/yolov5m.pt && \
+    wget -O yolov5l.pt https://github.com/ultralytics/yolov5/releases/download/v2.0/yolov5l.pt
 
 # Download some files that are pulled in, so we can run w/o network access
 RUN mkdir -p /root/.config/Ultralytics/ && wget -O /root/.config/Ultralytics/Arial.ttf https://ultralytics.com/assets/Arial.ttf
