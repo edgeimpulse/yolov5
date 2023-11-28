@@ -37,7 +37,7 @@ RUN python3 -m pip install --upgrade setuptools
 
 RUN git clone https://github.com/edgeimpulse/yolov5-training && \
     cd yolov5-training && \
-    git checkout fix-stdout-in-ei-studio && \
+    git checkout relu && \
     cd .. && \
     mv yolov5-training yolov5 
 
