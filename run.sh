@@ -84,6 +84,7 @@ python3 -u train.py --img $IMAGE_SIZE \
     --epochs $EPOCHS \
     --batch-size $BATCH_SIZE \
     --data /tmp/data/data.yaml \
+    --weights /app/yolov5$MODEL_SIZE.pt \
     --name yolov5_results \
     --cache
 echo "Training complete"
