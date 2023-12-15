@@ -3,7 +3,7 @@ ARG UBUNTU_VERSION=20.04
 
 ARG ARCH=
 ARG CUDA=11.2
-FROM nvidia/cuda${ARCH:+-$ARCH}:${CUDA}.1-base-ubuntu${UBUNTU_VERSION} as base
+FROM nvidia/cuda${ARCH:+-$ARCH}:${CUDA}.2-base-ubuntu${UBUNTU_VERSION} as base
 ARG CUDA
 ARG CUDNN=8.1.0.77-1
 ARG CUDNN_MAJOR_VERSION=8
@@ -38,7 +38,7 @@ RUN /bin/bash install_cmake.sh && \
 # YOLOv5 (v5.0-with-freeze-2 branch)
 RUN git clone https://github.com/edgeimpulse/yolov5-training yolov5 && \
     cd yolov5 && \
-    git checkout b50716549091e7d4de8ebcba3e00e8f29dfd69e3
+    git checkout 9a5b7e9f5a28817cb1542e58bd1cf4fbd8504966
 RUN cd yolov5 && pip3 install -r requirements.txt
 
 # Install TensorFlow
