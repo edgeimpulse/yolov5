@@ -75,7 +75,7 @@ python3 -u train.py --img $IMAGE_SIZE \
     --freeze 10 \
     --epochs $EPOCHS \
     --data /tmp/data/data.yaml \
-    --weights /app/yolov5s.pt \
+    --weights '' --cfg /tmp/data/yolov5s.yaml \
     --name yolov5_results \
     --cache \
     --workers 0
