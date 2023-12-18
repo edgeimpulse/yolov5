@@ -40,7 +40,12 @@ def convert(X, Y, category):
     global class_count, total_images, zf, last_printed, converted_images
 
     for ix in range(0, len(X)):
-        raw_img_data = (np.reshape(X[ix], (image_width, image_height, image_channels)) * 255).astype(np.uint8)
+        img_shape = ()
+        if image_channels == 1:
+            img_shape = (image_width, image_height)
+        else:
+            img_shape = (image_width, image_height, image_channels)
+        raw_img_data = (np.reshape(X[ix], img_shape) * 255).astype(np.uint8)
         labels = Y[ix]['boundingBoxes']
 
         images_dir = os.path.join(out_dir, category, 'images')

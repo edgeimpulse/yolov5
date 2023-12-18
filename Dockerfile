@@ -35,11 +35,10 @@ RUN apt update && apt install -y wget git python3 python3-pip zip libgl1 libgl1-
 # Latest setuptools
 RUN python3 -m pip install --upgrade setuptools
 
-RUN git clone https://github.com/edgeimpulse/yolov5-training && \
-    cd yolov5-training && \
-    git checkout fix-stdout-in-ei-studio && \
-    cd .. && \
-    mv yolov5-training yolov5 
+RUN git clone https://github.com/edgeimpulse/yolov5-training yolov5 && \
+    cd yolov5 && \
+    git checkout c7396b8cba92b1a0ae820d65d6d1b33ea1f22a5c
+RUN cd yolov5 && pip3 install -r requirements.txt
 
 # Local dependencies
 COPY requirements.txt ./
