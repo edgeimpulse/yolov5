@@ -38,7 +38,7 @@ RUN /bin/bash install_cmake.sh && \
 # YOLOv5 (v5.0-with-freeze-2 branch)
 RUN git clone https://github.com/edgeimpulse/yolov5-training yolov5 && \
     cd yolov5 && \
-    git checkout 4b5c3fac35e6216f77642cad61e54fabe4f0177b
+    git checkout ca687d09ba49018b14382a73f6aa2f127fde5580
 RUN cd yolov5 && pip3 install -r requirements.txt
 
 # Install TensorFlow
