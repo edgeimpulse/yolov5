@@ -92,7 +92,7 @@ mkdir -p $OUT_DIRECTORY
 
 # export as onnx
 echo "Converting to ONNX..."
-python3 -u models/export.py  --weights ./runs/train/yolov5_results/weights/last.pt --img-size $IMAGE_SIZE --batch-size 1 --grid
+USE_GRAY_INPUT=$VAL_USE_GRAY python3 -u models/export.py  --weights ./runs/train/yolov5_results/weights/last.pt --img-size $IMAGE_SIZE --batch-size 1 --grid
 cp ./runs/train/yolov5_results/weights/last.onnx $OUT_DIRECTORY/model.onnx
 # add shape info
 python3 /scripts/add_shape_info.py --onnx-file $OUT_DIRECTORY/model.onnx
