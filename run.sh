@@ -56,7 +56,13 @@ fi
 OUT_DIRECTORY=$(realpath $OUT_DIRECTORY)
 DATA_DIRECTORY=$(realpath $DATA_DIRECTORY)
 
-IMAGE_SIZE=$(python3 get_image_size.py --data-directory "$DATA_DIRECTORY")
+IMAGE_SHAPE=$(python3 get_image_size.py --data-directory "$DATA_DIRECTORY")
+IFS=',' read -r IMAGE_WIDTH IMAGE_CHANNELS <<< $IMAGE_SHAPE
+IMAGE_SIZE=$IMAGE_WIDTH
+
+if [ $IMAGE_CHANNELS -eq "1" ]; then
+   VAL_USE_GRAY=1
+fi
 
 # surpress OpenBLAS warnings
 export OMP_NUM_THREADS=1
@@ -71,7 +77,7 @@ rm -rf ./runs/train/yolov5_results/
 #     --freeze 10 - freeze the bottom layers of the network
 #     --workers 0 - as this otherwise requires a larger /dev/shm than we have on Edge Impulse prod,
 #                   there's probably a workaround for this, but we need to check with infra.
-python3 -u train.py --img $IMAGE_SIZE \
+USE_GRAY_INPUT=$VAL_USE_GRAY python3 -u train.py --img $IMAGE_SIZE \
     --freeze 10 \
     --epochs $EPOCHS \
     --data /tmp/data/data.yaml \

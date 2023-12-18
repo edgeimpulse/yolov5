@@ -10,4 +10,4 @@ args = parser.parse_args()
 X_train = np.load(os.path.join(args.data_directory, 'X_split_train.npy'), mmap_mode='r')
 image_width, image_height, image_channels = list(X_train.shape[1:])
 
-print(image_width)
+print(f'{image_width},{image_channels}')
