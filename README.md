@@ -56,6 +56,7 @@ You run this pipeline via Docker. This encapsulates all dependencies and package
     ```
     $ docker run --shm-size=1024m --rm -v $PWD:/scripts yolov5 --data-directory data/ --epochs 30 --model-size m --out-directory out/
     ```
+    Add the `--gpus all` option to the `docker run` command to enable usage of GPU while training. This will speed up the process a lot.
 
 11. This creates an .onnx file and two .tflite files (both quantized and unquantized) in the 'out' directory.
 
