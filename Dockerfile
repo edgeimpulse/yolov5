@@ -32,18 +32,20 @@ RUN ./install_cuda.sh && \
 # https://stackoverflow.com/questions/55313610/importerror-libgl-so-1-cannot-open-shared-object-file-no-such-file-or-directo
 RUN apt update && apt install -y wget git python3 python3-pip zip libgl1 libgl1-mesa-glx libglib2.0-0
 
-# Latest setuptools
-RUN python3 -m pip install --upgrade setuptools
+# Pin pip / setuptools
+RUN python3 -m pip install "pip==21.3.1" "setuptools==62.6.0"
 
 RUN git clone https://github.com/edgeimpulse/yolov5-training && \
     cd yolov5-training && \
     git checkout fix-stdout-in-ei-studio && \
     cd .. && \
-    mv yolov5-training yolov5 
+    mv yolov5-training yolov5
 
 # Local dependencies
 COPY requirements.txt ./
 RUN pip3 install -r requirements.txt
+
+RUN apt update && apt install -y pkg-config libhdf5-dev
 
 # Install TensorFlow
 COPY install_tensorflow.sh install_tensorflow.sh

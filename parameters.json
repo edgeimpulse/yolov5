@@ -1,38 +1,54 @@
-[{
-    "name": "Number of training cycles",
-    "value": "30",
-    "type": "int",
-    "help": "Number of epochs to train the neural network on.",
-    "param": "epochs"
-},
 {
-    "name": "Model size",
-    "value": "n",
-    "type": "select",
-    "valid": [
-            {
-                "label": "Nano - 1.9M params, 3.87 MB",
-                "value": "n"
-            },
-            {
-                "label": "Small - 7.2M params, 14.1 MB",
-                "value": "s"
-            },
-            {
-                "label": "Medium - 21.2M params, 40.8 MB",
-                "value": "m"
-            },
-            {
-                "label": "Large - 46.5M params, 89.3 MB",
-                "value": "l"
-            }
-        ],
-    "param": "model-size"
-},{
-    "name": "Batch size",
-    "value": "16",
-    "type": "int",
-    "help": "The batch size to use during training. Consider reducing this for larger models. Use -1 to autotune this value.",
-    "param": "batch-size",
-    "optional": true
-}]
+    "version": 1,
+    "type": "machine-learning",
+    "info": {
+        "name": "YOLOv5",
+        "description": "Transfer learning model based on Ultralytics YOLOv5, supporting RGB input at any resolution (square images only).",
+        "operatesOn": "object_detection",
+        "indRequiresGpu": false,
+        "imageInputScaling": "0..1",
+        "objectDetectionLastLayer": "yolov5",
+        "repositoryUrl": "https://github.com/edgeimpulse/yolov5"
+    },
+    "parameters": [
+        {
+            "name": "Number of training cycles",
+            "value": "30",
+            "type": "int",
+            "help": "Number of epochs to train the neural network on.",
+            "param": "epochs"
+        },
+        {
+            "name": "Model size",
+            "value": "n",
+            "type": "select",
+            "valid": [
+                {
+                    "label": "Nano - 1.9M params, 3.87 MB",
+                    "value": "n"
+                },
+                {
+                    "label": "Small - 7.2M params, 14.1 MB",
+                    "value": "s"
+                },
+                {
+                    "label": "Medium - 21.2M params, 40.8 MB",
+                    "value": "m"
+                },
+                {
+                    "label": "Large - 46.5M params, 89.3 MB",
+                    "value": "l"
+                }
+            ],
+            "param": "model-size"
+        },
+        {
+            "name": "Batch size",
+            "value": "16",
+            "type": "int",
+            "help": "The batch size to use during training. Consider reducing this for larger models. Use -1 to autotune this value.",
+            "param": "batch-size",
+            "optional": true
+        }
+    ]
+}

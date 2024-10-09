@@ -9,7 +9,7 @@ edge-impulse-blocks init
 edge-impulse-blocks push
 ```
 
-## What this repository does 
+## What this repository does
 As a primer, read the [Custom learning blocks](https://docs.edgeimpulse.com/docs/edge-impulse-studio/learning-blocks/adding-custom-learning-blocks) page in the Edge Impulse docs.
 (see [run.sh](run.sh)):
 
@@ -36,10 +36,9 @@ You run this pipeline via Docker. This encapsulates all dependencies and package
 
     ```
     $ edge-impulse-blocks init
-    # Answer the questions, select "Object Detection" for 'What type of data does this model operate on?' and "YOLOv5" for 'What's the last layer...'
     ```
 
-8. Fetch new data via:
+8. Fetch new data from an object detection project via:
 
     ```
     $ edge-impulse-blocks runner --download-data data/
@@ -54,7 +53,7 @@ You run this pipeline via Docker. This encapsulates all dependencies and package
 10. Run the container to test the script (you don't need to rebuild the container if you make changes):
 
     ```
-    $ docker run --shm-size=1024m --rm -v $PWD:/scripts yolov5 --data-directory data/ --epochs 30 --model-size m --out-directory out/
+    $ docker run --shm-size=1024m --rm -v $PWD:/scripts yolov5 --data-directory data/ --epochs 30 --model-size n --out-directory out/
     ```
 
 11. This creates an .onnx file and two .tflite files (both quantized and unquantized) in the 'out' directory.
