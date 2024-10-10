@@ -4,7 +4,9 @@ This repository is an example on how to [bring your own model](https://docs.edge
 
 As a primer, read the [Bring your own model](https://docs.edgeimpulse.com/docs/adding-custom-transfer-learning-models) page in the Edge Impulse docs.
 
-What this repository does (see [run.sh](run.sh)):
+## What this repository does
+As a primer, read the [Custom learning blocks](https://docs.edgeimpulse.com/docs/edge-impulse-studio/learning-blocks/adding-custom-learning-blocks) page in the Edge Impulse docs.
+(see [run.sh](run.sh)):
 
 1. Convert the training data / training labels into YOLOv5 format using [extract_dataset.py](extract_dataset.py).
 1. Train YOLOv5 model (using https://github.com/ultralytics/yolov5).
@@ -33,7 +35,7 @@ You run this pipeline via Docker. This encapsulates all dependencies and package
     # and "YOLOv5 (v5 - older model)" for 'What's the last layer...'
     ```
 
-8. Fetch new data via:
+8. Fetch new data from an object detection project via:
 
     ```
     $ edge-impulse-blocks runner --download-data data/

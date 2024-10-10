@@ -1,0 +1,29 @@
+{
+    "version": 1,
+    "type": "machine-learning",
+    "info": {
+        "name": "YOLOv5 for Renesas DRP-AI",
+        "description": "Transfer learning model using YOLOv5 v5 branch with yolov5s.pt weights. This block is only compatible with Renesas DRP-AI.",
+        "indRequiresGpu": false,
+        "operatesOn": "object_detection",
+        "imageInputScaling": "0..1",
+        "objectDetectionLastLayer": "yolov5v5-drpai",
+        "repositoryUrl": "https://github.com/edgeimpulse/yolov5/tree/v5"
+    },
+    "parameters": [
+        {
+            "name": "Number of training cycles",
+            "value": "30",
+            "type": "int",
+            "help": "Number of epochs to train the neural network on.",
+            "param": "epochs"
+        },
+        {
+            "name": "Learning rate",
+            "value": "0.001",
+            "type": "float",
+            "help": "How fast the neural network learns, if the network overfits quickly, then lower the learning rate.",
+            "param": "learning-rate"
+        }
+    ]
+}
