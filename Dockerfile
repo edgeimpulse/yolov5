@@ -35,11 +35,10 @@ RUN apt update && apt install -y wget git python3 python3-pip zip libgl1 libgl1-
 # Pin pip / setuptools
 RUN python3 -m pip install "pip==21.3.1" "setuptools==62.6.0"
 
-RUN git clone https://github.com/edgeimpulse/yolov5-training && \
-    cd yolov5-training && \
-    git checkout fix-stdout-in-ei-studio && \
-    cd .. && \
-    mv yolov5-training yolov5
+RUN wget https://github.com/ultralytics/yolov5/archive/23701eac7a7b160e478ba4bbef966d0af9348251.zip && \
+    unzip -d . 23701eac7a7b160e478ba4bbef966d0af9348251.zip && \
+    mv yolov5-23701eac7a7b160e478ba4bbef966d0af9348251 yolov5 && \
+    rm 23701eac7a7b160e478ba4bbef966d0af9348251.zip
 
 # Local dependencies
 COPY requirements.txt ./
@@ -57,7 +56,7 @@ RUN sed -i -e "s/warnings.warn/\# warnings.warn/" /usr/local/lib/python3.8/dist-
     sed -i -e "s/warnings.warn/\# warnings.warn/" /usr/local/lib/python3.8/dist-packages/torch/cpu/amp/autocast_mode.py && \
     sed -i -e "s/warnings.warn/\# warnings.warn/" /usr/local/lib/python3.8/dist-packages/torch/cuda/amp/autocast_mode.py
 
-# Grab yolov5n.pt pretrained weights
+# Grab pretrained weights
 RUN wget -O yolov5n.pt https://github.com/ultralytics/yolov5/releases/download/v6.2/yolov5n.pt && \
     wget -O yolov5s.pt https://github.com/ultralytics/yolov5/releases/download/v6.2/yolov5s.pt && \
     wget -O yolov5m.pt https://github.com/ultralytics/yolov5/releases/download/v6.2/yolov5m.pt && \

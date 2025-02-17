@@ -66,9 +66,6 @@ DATA_DIRECTORY=$(realpath $DATA_DIRECTORY)
 
 IMAGE_SIZE=$(python3 get_image_size.py --data-directory "$DATA_DIRECTORY")
 
-# Disable tqdm to reduce the volume of logging when training
-export TQDM_DISABLE=1
-
 # convert Edge Impulse dataset (in Numpy format, with JSON for labels into something YOLOv5 understands)
 # and write out a specs file
 python3 -u extract_dataset.py \
