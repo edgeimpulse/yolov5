@@ -3,6 +3,7 @@
 This repository is an example on how to [add a custom learning block](https://docs.edgeimpulse.com/docs/edge-impulse-studio/learning-blocks/adding-custom-learning-blocks) to Edge Impulse. This repository is using YOLOv5 (an object detection model), but the same principles apply to other transfer learning models.
 
 ## How to add to an org
+
 Download the repo and run the following from the root folder:
 ```
 edge-impulse-blocks init
@@ -10,6 +11,7 @@ edge-impulse-blocks push
 ```
 
 ## What this repository does
+
 As a primer, read the [Custom learning blocks](https://docs.edgeimpulse.com/docs/edge-impulse-studio/learning-blocks/adding-custom-learning-blocks) page in the Edge Impulse docs.
 (see [run.sh](run.sh)):
 
@@ -95,3 +97,7 @@ You can also push this block back to Edge Impulse, that makes it available like 
     ```
 
 2. The block is now available under any of your projects, via  **Create impulse > Add learning block**.
+
+## License notice
+
+This repository is licensed under [The Clear BSD License](LICENSE), but is utilizing the GPLv3 licensed [ultralytics/yolov5](https://github.com/ultralytics/yolov5) repository (from a commit before this repository was changed to AGPL) at arm's length.
