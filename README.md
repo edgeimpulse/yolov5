@@ -2,6 +2,10 @@
 
 This repository contains the code to bring YOLOv5 models into Edge Impulse.
 
+## Built-in block no longer available
+
+As of February 28, 2025, YOLOv5 is no longer available as a built-in block in Edge Impulse - due to a recent policy change on how we deal with hosting third party model training pipelines. No worries though, because this repository contains instructions on how to get YOLOv5 back in a few minutes. After following the instructions below you can select *Choose a different model*, re-pick YOLOv5, and you can retrain your model.
+
 ## Adding YOLOv5 to your Edge Impulse account
 
 To add this model to your Edge Impulse account (personal or enterprise organization):
